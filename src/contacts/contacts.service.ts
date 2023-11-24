@@ -8,13 +8,13 @@ import { ID, SECRET_KEY } from 'src/env';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { CreateDeal } from './interfaces/data.deal';
 import { UpdateContactDto } from './dto/update-contact.dto';
+import { TokenService } from 'src/token.service';
 
 
 @Injectable()
 export class ContactsService {
   baseURL = "https://ddonierov96gmailcom.amocrm.ru/api/v4"
-  
- 
+  constructor(private readonly tokenService: TokenService) { }
 
 
   async findContactWithEmailOrPhone(email: string, accessToken: string,): Promise<any> {
@@ -168,13 +168,40 @@ export class ContactsService {
     }
 
     try {
-      const response = await axios.post(url, data2, {
+      const response = await axios.patch(url, data2, {
         headers: header
       })
 
       return response.data
     } catch (error) {
       console.log(JSON.stringify(error.response.data))
+    }
+  }
+
+  async createDealService(data: CreateContactDto) {
+    try {
+      const access_token = await this.tokenService.getTokenFromMongoDB()
+      const result = await this.findContactWithEmailAndPhone(data.phone, data.email, access_token)
+      if (result) {
+        const id = result._embedded.contacts.id
+        const updated = await this.updateContact({
+          id,
+          ...data
+        }, access_token)
+        const newDeal = await this.createDeal(updated, access_token)
+        return newDeal._embedded.leads
+
+      } else {
+        const created = await this.createContact(data, access_token)
+        const id = created._embedded.contacts.id
+        const data2 = {
+          id
+        }
+        const newDeal = await this.createDeal(data2, access_token)
+        return newDeal._embedded.leads
+      }
+    } catch (error) {
+      console.log('Error in creating deal' + error)
     }
   }
 }
