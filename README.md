@@ -4,6 +4,9 @@
 для выполнение запроса ваи надо оправить GET на адрес
 `https://`
 
+Login: `ddonierov68@gmail.com`
+Password: `zxcasdqwe123D`
+
 ## Установка
 
 ```bash
