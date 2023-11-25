@@ -16,18 +16,13 @@ export class TokenService {
         const secondData = { access_token, refresh_token, expires_in: expiredData }
         try {
             // Имееется ли токен в дата базе
-            const hasSameOne = await this.tokenModel.countDocuments()
-            if (hasSameOne >= 1) {
-                await this.tokenModel.updateMany({}, {
-                    $set: secondData
-                })
-                return secondData
+            const hasSameOne = await this.tokenModel.find().lean()
+            if (hasSameOne.length >= 1) {
+                await this.tokenModel.deleteMany({})
+                await this.getAccessTokenFromAmoCRMByRefreshToken(hasSameOne[0].refresh_token)
+                return
             }
-            await this.tokenModel.create({
-                access_token,
-                refresh_token,
-                expires_in: expiredData
-            })
+            await this.tokenModel.create(secondData)
             return {
                 ...data,
                 expires_in: expiredData,

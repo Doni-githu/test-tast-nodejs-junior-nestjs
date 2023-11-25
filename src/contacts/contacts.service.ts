@@ -1,10 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { IDataToken } from './interfaces/data.token';
-import { InjectModel } from '@nestjs/mongoose';
-import { Token } from './schemas/token.schema';
-import { Model } from 'mongoose';
 import axios from "axios"
-import { ID, SECRET_KEY } from 'src/env';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { CreateDeal } from './interfaces/data.deal';
 import { UpdateContactDto } from './dto/update-contact.dto';
@@ -15,7 +10,6 @@ import { TokenService } from 'src/token.service';
 export class ContactsService {
   baseURL = "https://ddonierov96gmailcom.amocrm.ru/api/v4"
   constructor(private readonly tokenService: TokenService) { }
-
 
   async findContactWithEmailOrPhone(email: string, accessToken: string,): Promise<any> {
     const url = this.baseURL + "/contacts"
@@ -41,7 +35,7 @@ export class ContactsService {
     }
   }
 
-
+  
   async findContactWithEmailAndPhone(phone: string, email: string, accessToken: string): Promise<any> {
     const first = this.findContactWithEmailOrPhone(email, accessToken)
     const second = this.findContactWithEmailOrPhone(phone, accessToken)
