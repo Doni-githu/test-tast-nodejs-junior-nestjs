@@ -173,29 +173,6 @@ export class ContactsService {
   }
 
   async createDealService(data: CreateContactDto) {
-    try {
-      const access_token = await this.tokenService.getTokenFromMongoDB()
-      const result = await this.findContactWithEmailAndPhone(data.phone, data.email, access_token)
-      if (result) {
-        const id = result._embedded.contacts.id
-        const updated = await this.updateContact({
-          id,
-          ...data
-        }, access_token)
-        const newDeal = await this.createDeal(updated, access_token)
-        return newDeal._embedded.leads
-
-      } else {
-        const created = await this.createContact(data, access_token)
-        const id = created._embedded.contacts.id
-        const data2 = {
-          id
-        }
-        const newDeal = await this.createDeal(data2, access_token)
-        return newDeal._embedded.leads
-      }
-    } catch (error) {
-      console.log('Error in creating deal' + error)
-    }
+    
   }
 }
