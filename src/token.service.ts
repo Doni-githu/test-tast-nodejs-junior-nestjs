@@ -40,7 +40,7 @@ export class TokenService {
                 client_secret: SECRET_KEY,
                 grant_type: 'refresh_token',
                 refresh_token: value,
-                redirect_uri: "https://a0a8-213-230-92-232.ngrok-free.app/contacts/code"
+                redirect_uri: "https://test-tast-nodejs-junior-nestjs-production.up.railway.app/contacts/code"
             });
             console.log(response.data);
 
@@ -60,8 +60,8 @@ export class TokenService {
                 client_secret: SECRET_KEY,
                 grant_type: 'authorization_code',
                 code: value,
-                redirect_uri: "https://a0a8-213-230-92-232.ngrok-free.app/contacts/code"
-            });
+                redirect_uri: "https://test-tast-nodejs-junior-nestjs-production.up.railway.app/contacts/code"
+            }); 
             console.log(response.data);
 
             const result = await this.saveDataToken(response.data)
