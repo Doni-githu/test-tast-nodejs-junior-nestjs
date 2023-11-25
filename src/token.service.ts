@@ -20,7 +20,7 @@ export class TokenService {
             if (hasSameOne.length >= 1) {
                 await this.tokenModel.deleteMany({})
                 await this.getAccessTokenFromAmoCRMByRefreshToken(hasSameOne[0].refresh_token)
-                return
+                return secondData
             }
             await this.tokenModel.create(secondData)
             return {
@@ -61,7 +61,7 @@ export class TokenService {
                 grant_type: 'authorization_code',
                 code: value,
                 redirect_uri: "https://test-tast-nodejs-junior-nestjs-production.up.railway.app/contacts/code"
-            }); 
+            });
 
             const result = await this.saveDataToken(response.data)
             console.log(result)
