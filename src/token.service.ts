@@ -62,9 +62,9 @@ export class TokenService {
                 code: value,
                 redirect_uri: "https://test-tast-nodejs-junior-nestjs-production.up.railway.app/contacts/code"
             }); 
-            console.log(response.data);
 
             const result = await this.saveDataToken(response.data)
+            console.log(result)
             return response.data.access_token
         } catch (error) {
             console.error('Error in getting access token:', error);

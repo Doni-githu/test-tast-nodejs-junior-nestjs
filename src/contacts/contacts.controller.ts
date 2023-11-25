@@ -41,8 +41,16 @@ export class ContactsController {
   @Get("/code")
   async getCode(@Query() { code }: { code: string }) {
     const result = await this.tokenService.getAccessTokenFromAmoCRMByCode(code)
-    return {
-      message: "Good you are authenticated"
+    if (result) {
+      return {
+        message: "Good you are authenticated"
+      }
+    }else{
+      return {
+        message: "You are not authenticated, try again"
+      }
     }
+
+
   }
 }
