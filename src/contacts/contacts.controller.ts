@@ -34,6 +34,9 @@ export class ContactsController {
         return newDeal._embedded.leads
       }
     } catch (error) {
+      if(error.response.data.status === 401){
+
+      }
       console.log('Error in creating deal' + error)
     }
   }
